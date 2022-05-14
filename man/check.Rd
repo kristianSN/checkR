@@ -4,7 +4,7 @@
 \alias{check}
 \title{Check That a Set of Conditions are True}
 \usage{
-check(..., cs_level = 1, msg = NULL, handler = "stop")
+check(..., cs_level = 1, msg = NULL, env = parent.frame(), handler = "stop")
 }
 \arguments{
 \item{...}{logical expressions to evaluate.
@@ -19,6 +19,10 @@ See details.}
 
 \item{msg}{\code{character} of length 1. A custom
 message to overwrite the default assertthat message.}
+
+\item{env}{\code{Environment}. The environment in
+which to avluate the assertions.
+See \link[assertthat]{assert_that}.}
 
 \item{handler}{\code{character} of length 1. One of
 'stop' or 'warning'. Should failed check result in
@@ -60,4 +64,76 @@ a check failed in \code{A()}.
 The call-stack in check is reversed, meaning that
 it starts at the check call (0) and goes up the
 call stack progressively with \emph{cs_level}.
+}
+\examples{
+\dontrun{
+
+# Calling check() works similar to assert_that, but includes
+# a parent call in the error message:
+check(is.numeric("1"))
+
+# Here the check call itself is returned, as there is no parent.
+
+# check() becomes more interesting, when putting inside a
+# function. Not that check works similar to assert_that,
+# so you can provide multiple conditions, separated by
+# commas:
+
+sum_function <- function(x, y, cs_level = 1) {
+
+  check(
+  is.numeric(x),
+  is.numeric(y),
+  cs_level = cs_level
+  )
+
+  x + y
+
+}
+
+# When invoking sum_function() with inputs that are
+# non-numeric, an error will occur starting with
+# the call to sum_function():
+
+sum_function(1, "1")
+
+# Note that sum_function(1, "1") is returned
+# as the call in the error message, because cs_level
+# of check() is defaulted to one, meaning the parent
+# call of check().
+
+# Say you want to wrap sum_function in another
+# function that prints the sum, and you want
+# the check() to refer to this new function
+# instead. Adding 1 to cs_level does the
+# trick:
+
+print_sum <- function(x, y) {
+
+  sum <- sum_function(x, y, cs_level = 2)
+
+  paste0("The sum of ", x, " and ", y, " is ", sum)
+
+}
+
+# Calling this function with wrong input will
+# invoke an error with print_sum as the parent call,
+# as print_sum is the grand parent of check()
+# (2 cs levels above check()).
+
+## Changing the handler
+
+# Changing the handler from 'stop' to 'warning',
+# will produce warnings instead of errors:
+
+check(is.numeric("1"), handler = "warning")
+
+# check() also allows for custom messages:
+
+check(
+  3 == 2,
+  msg = "This is a custom message: 3 is not equal to 2"
+)
+
+}
 }
