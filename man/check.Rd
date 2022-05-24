@@ -4,10 +4,17 @@
 \alias{check}
 \title{Check That a Set of Conditions are True}
 \usage{
-check(..., cs_level = 1, msg = NULL, env = parent.frame(), handler = "stop")
+check(
+  ...,
+  cs_level = 1,
+  msg = NULL,
+  env = parent.frame(),
+  handler = c("stop", "warning"),
+  include_call = TRUE
+)
 }
 \arguments{
-\item{...}{logical expressions to evaluate.
+\item{...}{unnamed logical expressions to evaluate.
 See \link[assertthat]{assert_that}.}
 
 \item{cs_level}{\code{integer}. Indicater of how far up the
@@ -27,10 +34,13 @@ See \link[assertthat]{assert_that}.}
 \item{handler}{\code{character} of length 1. One of
 'stop' or 'warning'. Should failed check result in
 errors or warnings?}
+
+\item{include_call}{\code{logical}. Should the call found by
+'cs_level' be included in the error message?}
 }
 \value{
-TRUE if the check passed. Side-effect error or
-warning otherwise.
+Invisibly returns TRUE if the check passed.
+Side-effect error or warning otherwise.
 }
 \description{
 Checks that a set of provided conditions are true and returns

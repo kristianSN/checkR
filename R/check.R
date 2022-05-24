@@ -34,7 +34,7 @@
 #' it starts at the check call (0) and goes up the
 #' call stack progressively with *cs_level*.
 #'
-#' @param ... logical expressions to evaluate.
+#' @param ... unnamed logical expressions to evaluate.
 #' See \link[assertthat]{assert_that}.
 #'
 #' @param cs_level \code{integer}. Indicater of how far up the
@@ -54,9 +54,11 @@
 #' @param handler \code{character} of length 1. One of
 #' 'stop' or 'warning'. Should failed check result in
 #' errors or warnings?
+#' @param include_call \code{logical}. Should the call found by
+#' 'cs_level' be included in the error message?
 #'
-#' @return TRUE if the check passed. Side-effect error or
-#' warning otherwise.
+#' @return Invisibly returns TRUE if the check passed.
+#' Side-effect error or warning otherwise.
 #'
 #' @export
 #'
@@ -135,12 +137,10 @@ check <- function(...,
                   cs_level = 1,
                   msg = NULL,
                   env = parent.frame(),
-                  handler = "stop") {
+                  handler = c("stop", "warning"),
+                  include_call = TRUE) {
 
-  assertthat::assert_that(
-    handler %in% c("stop", "warning"),
-    msg = "handler not in either 'stop' or 'warning'."
-  )
+  handler <- rlang::arg_match(handler)
 
   res <- assertthat::see_if(
     ...,
@@ -148,7 +148,7 @@ check <- function(...,
     msg = msg
   )
 
-  if(res) return(TRUE)
+  if (res) return(invisible(TRUE))
 
   parent_call <- get_parent_call(cs_level)
 
@@ -158,7 +158,8 @@ check <- function(...,
     create_err_msg(
       assert_msg = attr(res, "msg"),
       parent_call = parent_call,
-      custom_msg = msg
+      custom_msg = msg,
+      include_call = include_call
     ),
     call. = FALSE
   )
@@ -171,7 +172,7 @@ check <- function(...,
 #' @importFrom magrittr %>%
 get_parent_call <- function(cs_level) {
 
-  assertthat::is.number(cs_level)
+  assertthat::is.count(cs_level)
 
   cs_level <- max(cs_level + 2 , 2)
 
@@ -192,21 +193,27 @@ get_parent_call <- function(cs_level) {
 #' @importFrom rlang %||%
 create_err_msg <- function(assert_msg,
                            parent_call,
-                           custom_msg) {
+                           custom_msg,
+                           include_call) {
 
   assertthat::assert_that(
     assertthat::is.string(assert_msg),
     assertthat::is.string(parent_call),
-    is.null(custom_msg) | assertthat::is.string(custom_msg)
+    is.null(custom_msg) | assertthat::is.string(custom_msg),
+    is.logical(include_call)
   )
 
   err_msg <- custom_msg %||%
     assert_msg
 
+  if (!include_call) {
+    return(paste0(err_msg, "."))
+  }
+
   paste0(
     "Check failed in ",
     parent_call,
-    ". \n",
+    ".\n",
     err_msg,
     "."
   )
