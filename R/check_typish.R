@@ -1,11 +1,11 @@
 
 
-checkr_type <- function(x, call = rlang::caller_env()){
-  checkr_typish(x, 'type', typeof, call = call)
+checkr_type <- function(x, expected_type, call = rlang::caller_env()){
+  checkr_typish(x, expected_type, typeof, call = call)
 }
 
-checkr_mode <- function(x, call = rlang::caller_env()){
-  checkr_typish(x, 'mode', mode, call = call)
+checkr_mode <- function(x, expected_mode, call = rlang::caller_env()){
+  checkr_typish(x, expected_mode, mode, call = call)
 }
 
 #' Check if an object is of a certain type
