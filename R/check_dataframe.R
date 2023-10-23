@@ -1,5 +1,9 @@
 # possible syntax with data.masking but what about tidy selectors
-# iris |> column_is_numeric(Sepal.Length, Sepal.Width >= 3, Petal.Length <= 2, Petal.Width)
+# iris |>
+#  has_columns(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width) |>
+#  check_column_type(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, type = 'string') |>
+#  check_column_data()
+#
 
 
 #' Check data.frame
@@ -11,9 +15,10 @@
 #' @export
 #'
 #' @examples
-column_is_numeric <- function(x, ...) {
-
-
+column_is_numeric <- function(.data, ...) {
+  test <- rlang::enquos(...)
+  return(test)
 }
 
+column_is_numeric(iris, Sepal.lenght, Sepal.Width)
 
