@@ -10,6 +10,7 @@
 #'
 #' @return TRUE invisibly if the variable is integerish
 #'
+#' @export
 #' @example
 #' check_is_integerish(1)
 check_is_integerish <- function(
@@ -31,6 +32,7 @@ check_is_integerish <- function(
 
 
 #' @describeIn check_is_integerish check that a variable is numeric
+#' @export
 check_is_numeric <- function(
     x
     , .x_name = rlang::caller_arg(x)
