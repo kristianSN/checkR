@@ -15,6 +15,8 @@
 #' check_is_integerish(1)
 check_is_integerish <- function(
     x
+    , allow_null = FALSE
+    , allow_na = TRUE
     , .x_name = rlang::caller_arg(x)
     , .call  = rlang::caller_env()
     , .class = .error_class
@@ -23,6 +25,8 @@ check_is_integerish <- function(
     check = rlang::is_integerish(x)
     , x = x
     , input_name = 'x'
+    , allow_null = allow_null
+    , allow_na = allow_na
     , var_name = .x_name
     , expected = "integer like"
     , class = .class
@@ -35,6 +39,8 @@ check_is_integerish <- function(
 #' @export
 check_is_numeric <- function(
     x
+    , allow_null = FALSE
+    , allow_na = TRUE
     , .x_name = rlang::caller_arg(x)
     , .call  = rlang::caller_env()
     , .class = .error_class
@@ -43,6 +49,8 @@ check_is_numeric <- function(
     check = is.numeric(x)
     , x = x
     , input_name = 'x'
+    , allow_null = allow_null
+    , allow_na = allow_na
     , var_name = .x_name
     , expected = "numeric"
     , class = .class

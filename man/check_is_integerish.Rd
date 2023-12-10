@@ -7,6 +7,8 @@
 \usage{
 check_is_integerish(
   x,
+  allow_null = FALSE,
+  allow_na = TRUE,
   .x_name = rlang::caller_arg(x),
   .call = rlang::caller_env(),
   .class = .error_class
@@ -14,6 +16,8 @@ check_is_integerish(
 
 check_is_numeric(
   x,
+  allow_null = FALSE,
+  allow_na = TRUE,
   .x_name = rlang::caller_arg(x),
   .call = rlang::caller_env(),
   .class = .error_class

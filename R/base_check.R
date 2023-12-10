@@ -14,12 +14,24 @@ error_on_false <- function(
     , x
     , var_name
     , input_name
+    , allow_null
+    , allow_na
     , expected
     , call
     , class
 ){
 
-  if (!check){
+  if (allow_null & is.null(x)){
+    return(invisible(TRUE))
+  }
+
+  if (!allow_na & any(is.na(x))){
+    na_check <- FALSE
+  } else {
+    na_check <- TRUE
+  }
+
+  if (!check & na_check){
     cli::cli_abort(c(
       "!" = "{.var {input_name}} must be {expected}",
       "i" = "{.var {var_name}} is {.val {x}}"
