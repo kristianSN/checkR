@@ -4,6 +4,8 @@
 #'  Check if a variable is integerish
 #'
 #' @param x the variable to check
+#' @param allow_null allow check to pass if x is null
+#' @param allow_na allow chechk to pass if x contains na
 #' @param .x_name the name of x in the parent environment
 #' @param .call The caller enviroment, used to get the name of the function that called the check
 #' @param .class The class of the error, defaults to 'checkr_error'

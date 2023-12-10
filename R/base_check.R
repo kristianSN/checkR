@@ -7,6 +7,8 @@
 #' @param expected a string describing what the input should be
 #' @param call the call environment
 #' @param class the class of the error
+#' @param allow_null allow check to pass if x is null
+#' @param allow_na allow check to pass if any element of x is na
 #'
 #' @return invisible true/falses
 error_on_false <- function(

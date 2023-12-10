@@ -25,6 +25,10 @@ error_on_false(
 
 \item{input_name}{the name of the input we are checking}
 
+\item{allow_null}{allow check to pass if x is null}
+
+\item{allow_na}{allow check to pass if any element of x is na}
+
 \item{expected}{a string describing what the input should be}
 
 \item{call}{the call environment}

@@ -26,6 +26,10 @@ check_is_numeric(
 \arguments{
 \item{x}{the variable to check}
 
+\item{allow_null}{allow check to pass if x is null}
+
+\item{allow_na}{allow chechk to pass if x contains na}
+
 \item{.x_name}{the name of x in the parent environment}
 
 \item{.call}{The caller enviroment, used to get the name of the function that called the check}
