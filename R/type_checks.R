@@ -19,11 +19,11 @@ check_is_integerish <- function(
     , .call  = rlang::caller_env()
     , .class = .error_class
 ){
-  check(
-    x = x
+  error_on_false(
+    check = rlang::is_integerish(x)
+    , x = x
     , input_name = 'x'
     , var_name = .x_name
-    , func = rlang::is_integerish
     , expected = "integer like"
     , class = .class
     , call = .call
@@ -39,11 +39,11 @@ check_is_numeric <- function(
     , .call  = rlang::caller_env()
     , .class = .error_class
 ){
-  check(
-    x = x
+  error_on_false(
+    check = is.numeric(x)
+    , x = x
     , input_name = 'x'
     , var_name = .x_name
-    , func = is.numeric
     , expected = "numeric"
     , class = .class
     , call = .call
